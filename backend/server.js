@@ -9,13 +9,14 @@ const PurchaseHistory = require('./models/PurchaseHistory');
 const app = express();
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/storeDB', {
+mongoose.connect('mongodb://127.0.0.1:27017/storeDB', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
+
 // Test route for GET requests (to verify server is running)
 app.get('/', (req, res) => {
-  res.send('Server is running');
+  res.send('Server is running 5001');
 });
 
 // Fetch data from the API and store it in the database

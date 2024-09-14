@@ -15,6 +15,16 @@ function App() {
     }
   };
 
+  // Calculate total quantity and total price
+  const totalQuantity = reportData.reduce(
+    (acc, item) => acc + item.purchase_quantity,
+    0
+  );
+  const totalSum = reportData.reduce(
+    (acc, item) => acc + item.product_price * item.purchase_quantity,
+    0
+  );
+
   return (
     <div className="overflow-x-auto ">
       <div className="mx-auto justify-center items-center">
@@ -22,7 +32,7 @@ function App() {
 
         <button
           onClick={fetchData}
-          className="mx-auto py-2 w-40 h-16 px-6 mb-4 mt-6 bg-sky-700 hover:bg-sky-600 duration-300 text-white flex items-center justify-center overflow-hidden hover:overflow-visible relative group"
+          className="mx-auto rounded-full py-2 w-40 h-16 px-6 mb-4 mt-6 bg-sky-700 hover:bg-sky-600 duration-300 text-white flex items-center justify-center overflow-hidden hover:overflow-visible relative group"
         >
           <svg
             viewBox="0 0 1024 1024"
@@ -65,38 +75,67 @@ function App() {
               ></path>
             </g>
           </svg>
-          <span className="duration-500">Explore</span>
+          <span className="relative ml-4 text-md text-center">
+            Generate Report
+          </span>
         </button>
-      </div>
-      {reportData.length > 0 && (
-        <table className="min-w-[90%] shadow-md  border mx-auto border-gray-100  my-6">
-          <thead>
-            <tr>
-              <th className="py-3 px-6 text-left border-b">Product Name</th>
-              <th className="py-3 px-6 text-left border-b">Customer Name</th>
-              <th className="py-3 px-6 text-left border-b">Quantity</th>
-              <th className="py-3 px-6 text-left border-b">Price</th>
-              <th className="py-3 px-6 text-left border-b">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reportData.map((item, index) => (
-              <tr
-                className="hover:bg-gray-50 transition duration-300"
-                key={index}
-              >
-                <td className="py-4 px-6 border-b">{item.product_name}</td>
-                <td className="py-4 px-6 border-b">{item.name}</td>
-                <td className="py-4 px-6 border-b">{item.purchase_quantity}</td>
-                <td className="py-4 px-6 border-b">{item.product_price}</td>
-                <td className="py-4 px-6 border-b">
-                  {item.product_price * item.purchase_quantity}
-                </td>
+
+        {reportData.length > 0 ? (
+          <table className="table-auto border-collapse border border-gray-500 w-full mx-auto text-center">
+            <thead className="bg-blue-500 text-white">
+              <tr>
+                <th className="px-4 py-2 border border-gray-500">
+                  Product Name
+                </th>
+                <th className="px-4 py-2 border border-gray-500">
+                  Customer Name
+                </th>
+                <th className="px-4 py-2 border border-gray-500">
+                  Product Price
+                </th>
+                <th className="px-4 py-2 border border-gray-500">Quantity</th>
+                <th className="px-4 py-2 border border-gray-500">Total</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {reportData.map((item) => (
+                <tr key={item.id}>
+                  <td className="border border-gray-500 px-4 py-2">
+                    {item.product_name}
+                  </td>
+                  <td className="border border-gray-500 px-4 py-2">
+                    {item.name}
+                  </td>
+                  <td className="border border-gray-500 px-4 py-2">
+                    {item.product_price}
+                  </td>
+                  <td className="border border-gray-500 px-4 py-2">
+                    {item.purchase_quantity}
+                  </td>
+                  <td className="border border-gray-500 px-4 py-2">
+                    {item.product_price * item.purchase_quantity}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="bg-gray-200 font-bold">
+                <td colSpan="3" className="px-4 py-2 border border-gray-500">
+                  Total
+                </td>
+                <td className="px-4 py-2 border border-gray-500">
+                  {totalQuantity}
+                </td>
+                <td className="px-4 py-2 border border-gray-500">{totalSum}</td>
+              </tr>
+            </tfoot>
+          </table>
+        ) : (
+          <p className="text-center font-bold text-red-500">
+            No data available. Click the button above to generate the report.
+          </p>
+        )}
+      </div>
     </div>
   );
 }
